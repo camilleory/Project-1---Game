@@ -1,20 +1,24 @@
 let button = document.querySelector('button')
 
 button.onclick = function () {
+    gameRunning = true;
     myGameArea.start()
-    let interval = setInterval(counter.startTime, 1000)
-    setInterval(addObstacle, 1000);
+    sound()
+    counter.timeInterval = setInterval(counter.startTime, 1000)
+    obstacleInterval = setInterval(addObstacle, 1000);
+    bonusInterval = setInterval(addBonus, 1000);
+
 
 };
 
-// myGameArea.start()
 
+
+//Reload page to play again
 function playAgain() {
-    if (!gameRunning) {
-        button.innerHTML = 'Play again';
+    button.innerHTML = 'Play again';
+    button.onclick = function () {
+        location.reload();
+        return false;
     }
 }
 
-
-
-// ajouter une classe playagin qui change le texte et un onclick pour restart le jeu

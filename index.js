@@ -1,5 +1,5 @@
 let touched = 0;
-let gameRunning = true;
+let gameRunning = false;
 // let interval = false;
 
 let canvas = document.createElement("canvas")
@@ -13,24 +13,19 @@ var myGameArea = {
         this.canvas.height = 500;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.footer);
-    // starting update function here, so maybe it never checks the other conditions before starting it
         this.interval = setInterval(updateGameArea, 60);
-        if (touched > 1){
-            console.log('hello')
-            this.interval = clearInterval()
-        }
-        //var ctx = myGameArea.context;
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
 };
-function check (){
+
+function check() {
     console.log('check')
-    if (touched > 1){
+    if (touched > 1) {
         console.log('hello')
         clearInterval(myGameArea.interval)
-}
+    }
 }
 check()
 
@@ -101,6 +96,7 @@ function moveObstacle() {
     }
 }
 
+
 // Displaying virus
 var newImage = new Image();
 newImage.src = './virus.png'
@@ -119,6 +115,57 @@ function displayObst() {
     }
 }
 // setInterval(addObstacle, 1000);
+
+let obstacleInterval;
+
+
+// //Create bonus, add to array, change x to make it "fall"
+let bonusArray = [];
+let bonusFalling = true;
+class Bonus {
+    constructor(x, y, width, speed) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.speed = speed;
+    }
+}
+
+function addBonus() {
+    bonusArray.push(new Bonus(Math.random() * (500 - 5) + 0, 0, 30))
+}
+
+
+function moveBonus() {
+    for (i = 0; i < bonusArray.length; i++) {
+        bonusArray[i].y += Math.random() * (10 - 1) + 1
+        // console.log('increase y' + obstaclesArray[i].y)
+    }
+}
+
+
+// Displaying bonus
+var bonusImg = new Image();
+bonusImg.src = './winimg.png'
+
+function displayBonus() {
+    console.log('vaccin')
+    var ctx = myGameArea.context;
+    if (bonusFalling === true) {
+
+
+        for (let i = 0; i < bonusArray.length; i++) {
+            ctx.drawImage(bonusImg, bonusArray[i].x, bonusArray[i].y, bonusArray[i].width, 30)
+        }
+    } else {
+        ctx.fillStyle = "white";
+        ctx.font = "50px Arial";
+    }
+}
+
+let bonusInterval;
+
+
 
 
 // Time
@@ -139,6 +186,9 @@ let counter = {
         ctx.fillStyle = "white";
         ctx.font = "30px Arial";
         ctx.fillText(counter.currentTime, 20, 40);
+    },
+    timeInterval: function () {
+        setInterval(counter.startTime, 1000)
     }
 };
 
@@ -150,19 +200,16 @@ var gameOverImg = new Image();
 gameOverImg.src = './winimg.png'
 
 function win() {
-    if (counter.currentTime === 60 && touched < 30) {
-        gameRunning = false;
-        var ctx = myGameArea.context;
-        ctx.fillStyle = "RGB(255, 165, 0)";
-        ctx.font = "70px Arial";
-        ctx.fillText("You survived !", 20, 250);
-        ctx.drawImage(gameOverImg, 100, 100, 100, 100)
-        playAgain()
-    }
-    return gameRunning
+    //gameRunning = false;
+    var ctx = myGameArea.context;
+    ctx.fillStyle = "RGB(255, 165, 0)";
+    ctx.font = "70px Arial";
+    ctx.fillText("You survived !", 20, 250);
+    ctx.drawImage(gameOverImg, 100, 100, 100, 100)
+    //resetCanvas()
+    //playAgain()
 
 }
-win()
 
 // Game Over
 function gameOver() {
@@ -171,6 +218,9 @@ function gameOver() {
     ctx.font = "70px Arial";
     ctx.fillText("GAME OVER !", 20, 250);
     button.setAttribute('class', 'play-again')
+    myGameArea.interval = clearInterval()
+    resetCanvas()
+
 }
 
 //Collision if Jerry touches Virus
@@ -191,29 +241,48 @@ function collision() {
     }
 }
 
+//Sounds
+function sound (){
+    var myAudio = document.createElement("audio");
+    myAudio.src = "./African_fun_long.mp3"
+    ;
+    myAudio.play();
+   // myAudio.pause();
+}
 
-if (counter.currentTime > 10) {
-    console.log('time stopped')
-    // backgroundImage.displayBackground();
-    // win();
-} 
+function moveSound(){
+    var myAudio = document.createElement("audio");
+    myAudio.src = "./zapsplat_toy_board_game_token_plastic_move_on_board_x1.mp3"
+    ;
+    myAudio.play();
+   // myAudio.pause();
+}
 
 
-// if (touched >= 20) {
-//     console.log('touches > 20')
-//     !gameRunning
-//     backgroundImage.displayBackground();
-//     gameOver()
-//     gameOverStatus.status = true;
-//     console.log('game over' + gameOverStatus.status)
-//     // return status = gameOverStatus.status;
-// }
+function winSound (){
+    var myAudio = document.createElement("audio");
+    myAudio.src = "./little_robot_sound_factory_Jingle_Win_Synth_04.mp3"
+    ;
+    myAudio.play();
+   // myAudio.pause();
+}
+
+
+function gameOverSound (){
+    console.log('gameoversound')
+    var myAudio = document.createElement("audio");
+    myAudio.src = "./game-over-piano-sound-effect.mp3"
+    ;
+    myAudio.play();
+   // myAudio.pause();
+}
+
 
 
 // updating canvas
 function updateGameArea() {
     console.log('updating..')
-    if (touched < 20 && counter.currentTime <=60) {
+    if (touched < 20 && counter.currentTime <= 60) {
         myGameArea.clear();
         backgroundImage.displayBackground();
         counter.displayTime();
@@ -221,122 +290,71 @@ function updateGameArea() {
         moveObstacle();
         displayObst(obstaclesArray);
         collision();
-    } else if (touched >20)
-    {
-        clearInterval(myGameArea.interval)
-        // gameOver()
-        console.log('gameover called')
+    }
+    if (counter.currentTime >= 49 && touched < 20) {
+        backgroundImage.displayBackground();
+        win();
+        //myGameArea.interval = clearInterval()
+       // resetCanvas()
+        playAgain();
+    }
+    if (touched >= 20) {
+        backgroundImage.displayBackground();
+        gameOver()
+        //myGameArea.interval = clearInterval()
+        //resetCanvas()
+        playAgain();
     }
 }
-   
-
-// if (counter.currentTime === 60 && touched < 30) { 
-//     !gameRunning 
-//         console.log(gameRunning)
-// };
 
 
-// if (gameRunning){
-//     updateGameArea()
-// } else if (!gameRunning){
-//     win()
-// }
-
-
-
-// CountDown when in quarantine 
-// let timeWhileQuarantine = {
-//     counterDown: 15,
-//     countDown: function () {
-//         if (timeWhileQuarantine.counterDown <= 0) {
-//             timeWhileQuarantine.counterDown = 0;
-//         } else {
-//             timeWhileQuarantine.counterDown -= 1;
-//             console.log(timeWhileQuarantine.counterDown);
-//             return timeWhileQuarantine.counterDown;
-//         }
-//     },
-//     displayCounterDown: function () {
-//         var ctx = myGameArea.context;
-//         ctx.fillStyle = "white";
-//         ctx.font = "30px Arial";
-//         ctx.fillText(timeWhileQuarantine.counterDown, 100, 100)
-//         console.log('display countdown called')
-//     }
-// };
-
-
-
-
-// if (obstaclesFalling === false) {
-//     console.log(timeWhileQuarantine.counterDown)
-//     setInterval(timeWhileQuarantine.countDown, 1000)
-// }
-
-
-
-// function wait() {  
-//     setInterval(timeWhileQuarantine.countDown, 1000) 
-//     var canvas = document.getElementById("canvas");
-//             var ctx = canvas.getContext("2d");
-//     console.log('wait')
-//     }
-
-// starting again after quarantine
-
-
-
+// Arrows linked to game
 document.onkeydown = function (e) {
     switch (e.keyCode) {
         case 37:
             jerry.moveLeft();
+            moveSound()
             break;
         case 39:
             jerry.moveRight();
+            moveSound()
             break;
     }
 };
 
 
-//function canvas appears 
-// function drawCanvas() {
-//     var canvas = document.getElementById("canvas");
-//     var ctx = canvas.getContext("2d");
 
-//     //Background Image
-//     var bgImg = new Image();
-//     bgImg.onload = function () {
-//         ctx.drawImage(bgImg, 0, 0, 500, 500)
-//     };
-//     bgImg.src = 'https://bgwall.net/wp-content/uploads/2014/09/best-street-macro-wallpaper-photo-hd.jpg'
+
+// //function canvas appears 
+// function drawCanvas() {
+//     let canvas1 = document.createElement("canvas")
+
+//     canvas1.width = 500;
+//     canvas1.height = 500;
+//     document.body.insertBefore(canvas1, document.body.footer);
+//     var ctx = canvas1.getContext("2d");
 
 //     //Jerry
-//     var img = new Image();
-//     img.onload = function () {
-//         ctx.drawImage(img, 150, 130, 400, 400);
-//     };
-//     img.src = "./cartoon-people-transparent-background-14.png";
+//     var jerryImg = new Image();
+//     jerryImg.src = "./cartoon-people-transparent-background-14.png"
 
-//     //Go 
+//     jerryImg.onload = function () {
+//         ctx.drawImage(jerryImg, 150, 130, 400, 400);
+//     };
+
+//     //Background Image
+//     var backgroundImg = new Image();
+//     backgroundImg.onload = function () {
+//         ctx.drawImage(backgroundImg, 0, 0, 500, 500)
+//     }
+//     backgroundImg.src = "./best-street-macro-wallpaper-photo-hd.jpg"
+
+//     //Virus
 //     var virus = new Image();
 //     virus.onload = function () {
 //         ctx.drawImage(virus, 100, 300, 100, 130);
 //     };
 //     virus.src = "https://www.stickpng.com/assets/images/5bd08b637aaafa0575d85039.png";
-// }
-// drawCanvas()
 
-
-// let object = document.querySelector('button')
-// object.onclick = function(){
-//myGameArea.start()
-
-
-//};
-
-// function startGame(){
-//     myGameArea.start()
 // }
 
-// let button = doc ument.querySelector('button');
-// button.onclick = startGame();
