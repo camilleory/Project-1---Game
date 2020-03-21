@@ -7,7 +7,7 @@ body{
     justify-content: center;
     align-items: center;
     margin: auto;
-    padding: 20px;
+    padding: 10px;
     font-family: 'Slabo 27px', serif;
 }
 
@@ -51,6 +51,6 @@ button:hover {
     background-color: RGB(178, 34, 34);
 }
 
-.play-again{
-    
+img{
+    height: 150px;
 }

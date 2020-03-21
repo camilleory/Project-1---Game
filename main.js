@@ -1,4 +1,6 @@
 let button = document.querySelector('button')
+let section = document.querySelector('#instructions')
+let body = document.querySelector('body')
 
 button.onclick = function () {
     gameRunning = true;
@@ -6,9 +8,9 @@ button.onclick = function () {
     sound()
     counter.timeInterval = setInterval(counter.startTime, 1000)
     obstacleInterval = setInterval(addObstacle, 1000);
-    bonusInterval = setInterval(addBonus, 1000);
-
-
+    bonusInterval = setInterval(addBonus, 5000);
+    section.remove()
+    // button.innerHTML = 'Pause'
 };
 
 

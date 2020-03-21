@@ -1,4 +1,4 @@
-let touched = 0;
+let touched = 20;
 let gameRunning = false;
 // let interval = false;
 
@@ -27,7 +27,7 @@ function check() {
         clearInterval(myGameArea.interval)
     }
 }
-check()
+// check()
 
 //myGameArea.start()
 
@@ -119,7 +119,7 @@ function displayObst() {
 let obstacleInterval;
 
 
-// //Create bonus, add to array, change x to make it "fall"
+// Create bonus, add to array, change x to make it "fall"
 let bonusArray = [];
 let bonusFalling = true;
 class Bonus {
@@ -143,13 +143,11 @@ function moveBonus() {
     }
 }
 
-
 // Displaying bonus
 var bonusImg = new Image();
-bonusImg.src = './winimg.png'
+bonusImg.src = './hiclipart.com.png'
 
 function displayBonus() {
-    console.log('vaccin')
     var ctx = myGameArea.context;
     if (bonusFalling === true) {
 
@@ -176,7 +174,6 @@ let counter = {
             counter.currentTime = 60;
         } else {
             counter.currentTime += 1
-            console.log(counter.currentTime)
 
             return counter.currentTime;
         }
@@ -206,8 +203,7 @@ function win() {
     ctx.font = "70px Arial";
     ctx.fillText("You survived !", 20, 250);
     ctx.drawImage(gameOverImg, 100, 100, 100, 100)
-    //resetCanvas()
-    //playAgain()
+    playAgain()
 
 }
 
@@ -219,7 +215,6 @@ function gameOver() {
     ctx.fillText("GAME OVER !", 20, 250);
     button.setAttribute('class', 'play-again')
     myGameArea.interval = clearInterval()
-    resetCanvas()
 
 }
 
@@ -230,7 +225,7 @@ function collision() {
         let collisionLeftX = obstaclesArray[i].x - 40
 
         if (jerry.x < collisionRightX && jerry.x > collisionLeftX && obstaclesArray[i].y < 480 && obstaclesArray[i].y > 420) {
-            touched += 1;
+            touched -= 1;
             //obstaclesFalling = false;
             var ctx = myGameArea.context;
             ctx.fillStyle = "white";
@@ -241,48 +236,56 @@ function collision() {
     }
 }
 
+// Get more points if jerry catches vaccin
+function getNeedle() {
+    for (let i = 0; i < bonusArray.length; i++) {
+        let collisionRightX = bonusArray[i].x ;
+        let collisionLeftX = bonusArray[i].x - 50
+
+        if (jerry.x < collisionRightX && jerry.x > collisionLeftX && bonusArray[i].y < 480 && bonusArray[i].y > 420) {
+            touched += 1;
+            //obstaclesFalling = false;
+            var ctx = myGameArea.context;
+            ctx.fillStyle = "white";
+            ctx.font = "30px Arial";
+            ctx.fillText("Yes!", jerry.x, 400);
+            //clearInterval(interval)
+        }
+    }
+}
+
+// Display life expectation
+function displayLife() {
+    var ctx = myGameArea.context;
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText(`Life credit: ${touched}`, 380, 40);
+}
+
+
 //Sounds
-function sound (){
+function sound() {
     var myAudio = document.createElement("audio");
-    myAudio.src = "./African_fun_long.mp3"
-    ;
+    myAudio.src = "./African_fun_long.mp3";
     myAudio.play();
-   // myAudio.pause();
+    myAudio.loop = true;
+
+    // myAudio.pause();
 }
 
-function moveSound(){
+function moveSound() {
     var myAudio = document.createElement("audio");
-    myAudio.src = "./zapsplat_toy_board_game_token_plastic_move_on_board_x1.mp3"
-    ;
+    myAudio.src = "./zapsplat_toy_board_game_token_plastic_move_on_board_x1.mp3";
     myAudio.play();
-   // myAudio.pause();
+    // myAudio.pause();
 }
 
-
-function winSound (){
-    var myAudio = document.createElement("audio");
-    myAudio.src = "./little_robot_sound_factory_Jingle_Win_Synth_04.mp3"
-    ;
-    myAudio.play();
-   // myAudio.pause();
-}
-
-
-function gameOverSound (){
-    console.log('gameoversound')
-    var myAudio = document.createElement("audio");
-    myAudio.src = "./game-over-piano-sound-effect.mp3"
-    ;
-    myAudio.play();
-   // myAudio.pause();
-}
 
 
 
 // updating canvas
 function updateGameArea() {
-    console.log('updating..')
-    if (touched < 20 && counter.currentTime <= 60) {
+    if (touched > 0 && counter.currentTime <= 49) {
         myGameArea.clear();
         backgroundImage.displayBackground();
         counter.displayTime();
@@ -290,20 +293,29 @@ function updateGameArea() {
         moveObstacle();
         displayObst(obstaclesArray);
         collision();
+        getNeedle()
+        displayBonus(bonusArray)
+        moveBonus()
+        displayLife()
     }
-    if (counter.currentTime >= 49 && touched < 20) {
+    if (touched >= 50) {
         backgroundImage.displayBackground();
         win();
-        //myGameArea.interval = clearInterval()
-       // resetCanvas()
         playAgain();
     }
-    if (touched >= 20) {
+    if (touched <= 0 ) {
+        console.log('gameOver')
         backgroundImage.displayBackground();
         gameOver()
-        //myGameArea.interval = clearInterval()
-        //resetCanvas()
         playAgain();
+    }
+    if (counter.currentTime >= 45){
+        gameOver();
+        ctx.fillStyle = "white";
+            ctx.font = "30px Arial";
+            ctx.fillText("You are too slow!", 150, 180);
+            counter.timeInterval = ""
+            playAgain()
     }
 }
 
@@ -321,40 +333,3 @@ document.onkeydown = function (e) {
             break;
     }
 };
-
-
-
-
-// //function canvas appears 
-// function drawCanvas() {
-//     let canvas1 = document.createElement("canvas")
-
-//     canvas1.width = 500;
-//     canvas1.height = 500;
-//     document.body.insertBefore(canvas1, document.body.footer);
-//     var ctx = canvas1.getContext("2d");
-
-//     //Jerry
-//     var jerryImg = new Image();
-//     jerryImg.src = "./cartoon-people-transparent-background-14.png"
-
-//     jerryImg.onload = function () {
-//         ctx.drawImage(jerryImg, 150, 130, 400, 400);
-//     };
-
-//     //Background Image
-//     var backgroundImg = new Image();
-//     backgroundImg.onload = function () {
-//         ctx.drawImage(backgroundImg, 0, 0, 500, 500)
-//     }
-//     backgroundImg.src = "./best-street-macro-wallpaper-photo-hd.jpg"
-
-//     //Virus
-//     var virus = new Image();
-//     virus.onload = function () {
-//         ctx.drawImage(virus, 100, 300, 100, 130);
-//     };
-//     virus.src = "https://www.stickpng.com/assets/images/5bd08b637aaafa0575d85039.png";
-
-// }
-
