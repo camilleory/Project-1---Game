@@ -239,7 +239,7 @@ function collision() {
 // Get more points if jerry catches vaccin
 function getNeedle() {
     for (let i = 0; i < bonusArray.length; i++) {
-        let collisionRightX = bonusArray[i].x -10 ;
+        let collisionRightX = bonusArray[i].x - 10;
         let collisionLeftX = bonusArray[i].x - 50
 
         if (jerry.x < collisionRightX && jerry.x > collisionLeftX && bonusArray[i].y < 480 && bonusArray[i].y > 420) {
@@ -303,18 +303,19 @@ function updateGameArea() {
         win();
         playAgain();
     }
-    if (touched <= 0 ) {
+    if (touched <= 0) {
         backgroundImage.displayBackground();
         gameOver()
         playAgain();
     }
-    if (counter.currentTime >= 60){
+    if (counter.currentTime >= 60) {
         gameOver();
         ctx.fillStyle = "white";
-            ctx.font = "30px Arial";
-            ctx.fillText("You are too slow!", 150, 180);
-            counter.timeInterval = ""
-            playAgain()
+        ctx.font = "30px Arial";
+        ctx.fillText("You are too slow!", 150, 180);
+        counter.timeInterval = ""
+        playAgain()
+        clearInterval(bonusInterval)
     }
 }
 
