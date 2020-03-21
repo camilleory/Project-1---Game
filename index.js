@@ -309,7 +309,7 @@ function updateGameArea() {
         gameOver()
         playAgain();
     }
-    if (counter.currentTime >= 45){
+    if (counter.currentTime >= 60){
         gameOver();
         ctx.fillStyle = "white";
             ctx.font = "30px Arial";
