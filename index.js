@@ -91,7 +91,7 @@ console.log(obstaclesArray)
 
 function moveObstacle() {
     for (i = 0; i < obstaclesArray.length; i++) {
-        obstaclesArray[i].y += Math.random() * (10 - 1) + 1
+        obstaclesArray[i].y += 10
         // console.log('increase y' + obstaclesArray[i].y)
     }
 }
@@ -138,7 +138,7 @@ function addBonus() {
 
 function moveBonus() {
     for (i = 0; i < bonusArray.length; i++) {
-        bonusArray[i].y += Math.random() * (10 - 1) + 1
+        bonusArray[i].y += 7
         // console.log('increase y' + obstaclesArray[i].y)
     }
 }
