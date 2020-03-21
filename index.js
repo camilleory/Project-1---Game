@@ -269,8 +269,6 @@ function sound() {
     myAudio.src = "./African_fun_long.mp3";
     myAudio.play();
     myAudio.loop = true;
-
-    // myAudio.pause();
 }
 
 function moveSound() {
@@ -302,13 +300,16 @@ function updateGameArea() {
         backgroundImage.displayBackground();
         win();
         playAgain();
+        touched = 1000;
+        console.log(touched)
+        clearInterval(bonusInterval)
     }
     if (touched <= 0) {
         backgroundImage.displayBackground();
         gameOver()
         playAgain();
     }
-    if (counter.currentTime >= 60) {
+    if (counter.currentTime >= 60 && touched < 50) {
         gameOver();
         ctx.fillStyle = "white";
         ctx.font = "30px Arial";
