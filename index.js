@@ -239,7 +239,7 @@ function collision() {
 // Get more points if jerry catches vaccin
 function getNeedle() {
     for (let i = 0; i < bonusArray.length; i++) {
-        let collisionRightX = bonusArray[i].x ;
+        let collisionRightX = bonusArray[i].x -10 ;
         let collisionLeftX = bonusArray[i].x - 50
 
         if (jerry.x < collisionRightX && jerry.x > collisionLeftX && bonusArray[i].y < 480 && bonusArray[i].y > 420) {
@@ -285,7 +285,7 @@ function moveSound() {
 
 // updating canvas
 function updateGameArea() {
-    if (touched > 0 && counter.currentTime <= 49) {
+    if (touched > 0 && counter.currentTime <= 60) {
         myGameArea.clear();
         backgroundImage.displayBackground();
         counter.displayTime();
@@ -304,7 +304,6 @@ function updateGameArea() {
         playAgain();
     }
     if (touched <= 0 ) {
-        console.log('gameOver')
         backgroundImage.displayBackground();
         gameOver()
         playAgain();
