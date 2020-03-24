@@ -1,5 +1,7 @@
-let touched = 20;
+let touched = 5;
 let gameRunning = false;
+let section1 = document.querySelector('#explainations')
+
 // let interval = false;
 
 let canvas = document.createElement("canvas")
@@ -12,8 +14,9 @@ var myGameArea = {
         this.canvas.width = 500;
         this.canvas.height = 500;
         this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.footer);
+        document.querySelector('#instructions').appendChild(this.canvas)
         this.interval = setInterval(updateGameArea, 60);
+        document.querySelector('#Jerry').remove();
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -224,7 +227,8 @@ function collision() {
         let collisionRightX = obstaclesArray[i].x;
         let collisionLeftX = obstaclesArray[i].x - 40
 
-        if (jerry.x < collisionRightX && jerry.x > collisionLeftX && obstaclesArray[i].y < 480 && obstaclesArray[i].y > 420) {
+        if (jerry.x < collisionRightX && jerry.x > collisionLeftX && obstaclesArray[i].y === 420 /*&& obstaclesArray[i].y > 420*/) {
+            obstaclesArray.pop()
             touched -= 1;
             //obstaclesFalling = false;
             var ctx = myGameArea.context;
@@ -243,6 +247,7 @@ function getNeedle() {
         let collisionLeftX = bonusArray[i].x - 50
 
         if (jerry.x < collisionRightX && jerry.x > collisionLeftX && bonusArray[i].y < 480 && bonusArray[i].y > 420) {
+            bonusArray.pop()
             touched += 1;
             //obstaclesFalling = false;
             var ctx = myGameArea.context;
@@ -296,7 +301,7 @@ function updateGameArea() {
         moveBonus()
         displayLife()
     }
-    if (touched >= 50) {
+    if (touched >= 10) {
         backgroundImage.displayBackground();
         win();
         playAgain();
@@ -309,7 +314,7 @@ function updateGameArea() {
         gameOver()
         playAgain();
     }
-    if (counter.currentTime >= 60 && touched < 50) {
+    if (counter.currentTime >= 60 && touched < 10) {
         gameOver();
         ctx.fillStyle = "white";
         ctx.font = "30px Arial";

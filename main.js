@@ -9,8 +9,8 @@ button.onclick = function () {
     counter.timeInterval = setInterval(counter.startTime, 1000)
     obstacleInterval = setInterval(addObstacle, 1000);
     bonusInterval = setInterval(addBonus, 5000);
-    section.remove()
-    // button.innerHTML = 'Pause'
+    // section.remove()
+    button.innerHTML = 'Go faster'
 };
 
 

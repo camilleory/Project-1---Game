@@ -1,21 +1,37 @@
 
 
 body{
+    margin: 50px;
+    background-image: url(./best-street-macro-wallpaper-photo-hd.jpg);
+    font-family: 'Baloo 2', cursive;
+}
+
+
+header{
+    display: flex;
+    justify-content: center;
+}
+
+main{
     background-color: RGB(255, 228, 196);
+
+    margin: white solid 3px;
+    border-radius: 25px;
+    width: 700px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: auto;
     padding: 10px;
-    font-family: 'Slabo 27px', serif;
+
 }
+
 
 h1{
     color: RGB(128, 0, 0);
-    font-size: 50px;
+    font-size: 70px;
     margin: none;
-    padding: 10px;
 }
  img{
      background-color: RGB(255, 228, 196);
@@ -40,7 +56,7 @@ canvas{
 button{
     margin: 30px;
     padding: 20px;
-    font-size: 30px;
+    font-size: 20px;
     background-color: RGB(128, 0, 0);
     color: RGB(255, 235, 205);
     border-radius: 25px;
@@ -53,4 +69,21 @@ button:hover {
 
 img{
     height: 150px;
+}
+
+#explainations{
+display: flex;
+justify-content: space-around;
+text-align: center;
+}
+
+#explainations div{
+    margin-top: 20px;
+    margin-bottom: 0px;
+    padding: 20px;
+    width: 100px;
+}
+
+#explainations img{
+    height: 50px;
 }
