@@ -223,21 +223,26 @@ function gameOver() {
 
 //Collision if Jerry touches Virus
 function collision() {
+
     for (let i = 0; i < obstaclesArray.length; i++) {
         let collisionRightX = obstaclesArray[i].x;
         let collisionLeftX = obstaclesArray[i].x - 40
 
-        if (jerry.x < collisionRightX && jerry.x > collisionLeftX && obstaclesArray[i].y === 420 /*&& obstaclesArray[i].y > 420*/) {
-            obstaclesArray.pop()
+        if (jerry.x < collisionRightX && jerry.x > collisionLeftX && obstaclesArray[i].y === 410 /*&& obstaclesArray[i].y > 420*/) {
+            //obstaclesArray.pop()
+           // obstaclesArray.splice(collidingObstacleIdx, 1)
+           collidingObstacleIdx = i
+
             touched -= 1;
-            //obstaclesFalling = false;
+            obstaclesArray.splice(collidingObstacleIdx, 1)
+
             var ctx = myGameArea.context;
             ctx.fillStyle = "white";
             ctx.font = "30px Arial";
             ctx.fillText("Argh!", jerry.x, 400);
-            //clearInterval(interval)
         }
     }
+
 }
 
 // Get more points if jerry catches vaccin
